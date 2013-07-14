@@ -22,6 +22,7 @@ grails.project.dependency.resolution = {
         //mavenRepo "http://repository.jboss.com/maven2/"
     }
     dependencies {
+        test "org.spockframework:spock-grails-support:0.7-groovy-2.0"
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
         // runtime 'mysql:mysql-connector-java:5.1.21'
@@ -32,6 +33,9 @@ grails.project.dependency.resolution = {
               ":release:2.2.1",
               ":rest-client-builder:1.0.3") {
             export = false
+        }
+        test(":spock:0.7") {
+            exclude "spock-grails-support"
         }
     }
 }
