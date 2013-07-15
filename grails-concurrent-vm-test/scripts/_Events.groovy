@@ -18,8 +18,8 @@ eventTestPhasesStart = { args ->
         binding.runTests = { GrailsTestType type, File compiledClassesDir ->
             grailsConsole.updateStatus "Running: ${type.name} | GrailsTestType: ${type.class.name}| Split number: ${splitNumber} ..."
             if(type instanceof GrailsTestTypeSupport){
-                type = splitClass.newInstance(type, splitNumber, 10)
-                type.splitNumber = splitNumber
+                type = splitClass.newInstance(type, splitNumber, 1)
+                type.overrideSourceFileCollection()
             }
 
             def testCount = type.prepare(testTargetPatterns, compiledClassesDir, binding)

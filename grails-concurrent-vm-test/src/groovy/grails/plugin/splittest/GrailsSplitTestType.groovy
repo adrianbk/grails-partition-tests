@@ -8,6 +8,7 @@ import org.codehaus.groovy.grails.test.GrailsTestType
 import org.codehaus.groovy.grails.test.GrailsTestTypeResult
 import org.codehaus.groovy.grails.test.event.GrailsTestEventPublisher
 import org.codehaus.groovy.grails.test.support.GrailsTestTypeSupport
+import org.apache.commons.collections.ListUtils
 
 class GrailsSplitTestType implements GrailsTestType{
     @Delegate
@@ -21,7 +22,6 @@ class GrailsSplitTestType implements GrailsTestType{
         this.totalSplits = totalSplits
         validateSplits()
         this.grailsTestTypeSupport = grailsTestTypeSupport
-        overrideSourceFileCollection()
     }
 
 
@@ -39,7 +39,7 @@ class GrailsSplitTestType implements GrailsTestType{
         this.grailsTestTypeSupport.metaClass.eachSourceFile = {Closure body ->
             testTargetPatterns.each {testTargetPattern ->
                 def allSourceFiles = findSourceFiles(testTargetPattern)
-                def splitSourceFiles = collateSourceFiles(allSourceFiles)
+                def splitSourceFiles = getFilesForThisSplit(splitNumber, allSourceFiles)
                 splitSourceFiles.each {sourceFile ->
                     body(testTargetPattern, sourceFile)
                 }
@@ -55,38 +55,47 @@ class GrailsSplitTestType implements GrailsTestType{
         }
     }
 
+    public List getFilesForThisSplit(splitNumber, allSourceFiles){
+       def collated = collateSourceFiles(allSourceFiles)
+       return collated.get(splitNumber-1)
+    }
+
     public List collateSourceFiles(List origSourceFiles){
         if(origSourceFiles && !origSourceFiles.empty){
             //Sort should be as deterministic as possible - size and name
             CompositeFileComparator comparator = new CompositeFileComparator(SizeFileComparator.SIZE_COMPARATOR, NameFileComparator.NAME_COMPARATOR)
             List sorted = comparator.sort(origSourceFiles)
-
-//            int collateSize = calculateCollateSize(sorted.size())
-
-            List collated = sorted
-            return collated
+            List buckets = (0 .. totalSplits).collect{[]}
+            buckets = distributeToBuckets(buckets, sorted)
+            int resultSize = 0
+            buckets.each {List l -> resultSize += l.size() }
+            //Don't want to loose ant tests
+            assert resultSize == origSourceFiles.size()
+            return buckets
         }
-        return origSourceFiles
+        return [origSourceFiles]
     }
 
-    public Integer calculateCollateSize(Integer listSize){
+    public List distributeToBuckets(List<List> listOfLists, List list) {
+        if (null == listOfLists || list.empty) {
+            return [list]
+        }
+        else if (listOfLists.size() == 1) {
+            listOfLists.get(0).addAll(list)
+            return listOfLists
+        }
+        else {
+            int bucketCount = listOfLists.size()
+            int bucketIndex = 0
 
-        if(listSize <= totalSplits){
-            return totalSplits
-        } else{
-            params.max = Math.min(max ?: 10, 100)
-
-//            def l = (1..10)
-//
-//            Integer bucketSize = 4
-//            Integer size = l.size()
-//            int colS = size / bucketSize
-//
-//            println size + ' ' +  colS
-//            l.collate(colS, true)
-            return listSize / totalSplits
+            list.each {f ->
+                listOfLists.get(bucketIndex).add(f)
+                bucketIndex++
+                if (bucketIndex == (bucketCount - 1)) {
+                    bucketIndex = 0
+                }
+            }
+            return listOfLists
         }
     }
-
-
 }

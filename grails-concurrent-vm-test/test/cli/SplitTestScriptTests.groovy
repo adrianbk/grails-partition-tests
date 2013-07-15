@@ -8,7 +8,7 @@ class SplitTestScriptTests extends AbstractCliTestCase{
 
     @Override
     protected void setUp() {
-        timeout = 5000
+        timeout = 10000
     }
 
     @Override
