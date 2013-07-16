@@ -15,11 +15,14 @@ class GrailsSplitTestType implements GrailsTestType{
     GrailsTestTypeSupport grailsTestTypeSupport
     Integer splitNumber
     Integer totalSplits
+    Integer totalShards = 1
+    Integer shardNumber = 1
 
 
-    GrailsSplitTestType(GrailsTestTypeSupport grailsTestTypeSupport, int splitNumber, int totalSplits) {
+    GrailsSplitTestType(GrailsTestTypeSupport grailsTestTypeSupport, int splitNumber, int totalSplits, int totalShards) {
         this.splitNumber = splitNumber
         this.totalSplits = totalSplits
+        this.totalShards = totalShards
         validateSplits()
         this.grailsTestTypeSupport = grailsTestTypeSupport
     }
@@ -35,6 +38,10 @@ class GrailsSplitTestType implements GrailsTestType{
         grailsTestTypeSupport.run(eventPublisher)
     }
 
+    /**
+     * This is a bit nasty but in order to control the classes tto run - overide the eachSourceFile closure of
+     * every sub class of GrailsTestType
+     */
     private void overrideSourceFileCollection() {
         this.grailsTestTypeSupport.metaClass.eachSourceFile = {Closure body ->
             testTargetPatterns.each {testTargetPattern ->
@@ -60,6 +67,11 @@ class GrailsSplitTestType implements GrailsTestType{
        return collated.get(splitNumber-1)
     }
 
+    public List getFilesForThisConcurrentShard(int shardNumber, List candidates){
+
+
+    }
+
     public List collateSourceFiles(List origSourceFiles){
         if(origSourceFiles && !origSourceFiles.empty){
             //Sort should be as deterministic as possible - size and name
@@ -69,7 +81,7 @@ class GrailsSplitTestType implements GrailsTestType{
             buckets = distributeToBuckets(buckets, sorted)
             int resultSize = 0
             buckets.each {List l -> resultSize += l.size() }
-            //Don't want to loose ant tests
+            //Don't want to loose any tests
             assert resultSize == origSourceFiles.size()
             return buckets
         }

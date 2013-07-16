@@ -22,3 +22,16 @@ log4j = {
 
     warn   'org.mortbay.log'
 }
+
+gcvt{
+    concurrentPhases{
+        unit{
+          shards=2
+        }
+        functional{
+          shards=2
+        }
+    }
+}
+
+
