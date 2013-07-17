@@ -26,10 +26,10 @@ log4j = {
 gcvt{
     concurrentPhases{
         unit{
-          shards=2
+          shards=1
         }
         functional{
-          shards=2
+          shards=1
         }
     }
 }

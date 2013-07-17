@@ -7,7 +7,7 @@ class  GrailsTestOptionParserSpec extends Specification {
 
     def "successfully parse test phases"(){
        expect:
-        true
+     true
     }
 
 }
