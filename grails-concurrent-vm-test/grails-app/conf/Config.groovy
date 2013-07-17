@@ -29,7 +29,7 @@ gcvt{
           shards=2
         }
         functional{
-          shards=2
+          shards=1
         }
     }
 }

@@ -17,9 +17,11 @@ class GrailsSplitTestType implements GrailsTestType{
     Integer totalSplits
     Integer totalShards = 1
     Integer shardNumber = 1
+    List shardTestClasses = []
+    List splitTestClasses = []
 
 
-    GrailsSplitTestType(GrailsTestTypeSupport grailsTestTypeSupport, int splitNumber, int totalSplits, int totalShards) {
+    GrailsSplitTestType(GrailsTestTypeSupport grailsTestTypeSupport, Integer splitNumber, Integer totalSplits, Integer totalShards) {
         this.splitNumber = splitNumber
         this.totalSplits = totalSplits
         this.totalShards = totalShards
@@ -39,17 +41,31 @@ class GrailsSplitTestType implements GrailsTestType{
     }
 
     /**
-     * This is a bit nasty but in order to control the classes tto run - overide the eachSourceFile closure of
+     * This is a bit nasty but in order to control the classes to run - override the eachSourceFile closure of
      * every sub class of GrailsTestType
+     * Both Junit and Spock test types use this closure to find the files to run
      */
     private void overrideSourceFileCollection() {
+        shardTestClasses  = []
+        splitTestClasses = []
+
+        //Note this is usually called twice by TestTypes - once on prepare and again when running
         this.grailsTestTypeSupport.metaClass.eachSourceFile = {Closure body ->
-            testTargetPatterns.each {testTargetPattern ->
-                def allSourceFiles = findSourceFiles(testTargetPattern)
-                def splitSourceFiles = getFilesForThisSplit(splitNumber, allSourceFiles)
-                splitSourceFiles.each {sourceFile ->
-                    body(testTargetPattern, sourceFile)
+            testTargetPatterns.each { testTargetPattern ->
+                def allFiles = findSourceFiles(testTargetPattern)
+                def splitSourceFiles = getFilesForThisSplit(splitNumber, allFiles)
+                splitTestClasses.addAll(splitSourceFiles)
+                println("splitSourceFiles:" + splitSourceFiles)
+                if(splitSourceFiles.size() > 0){
+                    def shardedFiles = getFilesForCurrentShard(shardNumber, splitSourceFiles)
+//                    println("shardedFiles:" + shardedFiles)
+
+                    shardTestClasses .addAll(shardedFiles)
+                    shardedFiles.each { sourceFile ->
+                        body(testTargetPattern, sourceFile)
+                    }
                 }
+
             }
         }
     }
@@ -62,52 +78,48 @@ class GrailsSplitTestType implements GrailsTestType{
         }
     }
 
-    public List getFilesForThisSplit(splitNumber, allSourceFiles){
-       def collated = collateSourceFiles(allSourceFiles)
-       return collated.get(splitNumber-1)
+    public List getFilesForThisSplit(int spl, allSourceFiles){
+       def collated = collateSourceFiles(allSourceFiles, totalSplits)
+       return collated.get(spl-1)
     }
 
-    public List getFilesForThisConcurrentShard(int shardNumber, List candidates){
-
-
+    public List getFilesForCurrentShard(int shd, List candidates){
+        def collated = collateSourceFiles(candidates, totalShards)
+//        println("sharded Files candidates:" + candidates + "Getting shard: ${shd}: Collated: ${collated}")
+        return collated.get(shd-1)
     }
 
-    public List collateSourceFiles(List origSourceFiles){
-        if(origSourceFiles && !origSourceFiles.empty){
+    public  List collateSourceFiles(List candidates, splitCount){
             //Sort should be as deterministic as possible - size and name
-            CompositeFileComparator comparator = new CompositeFileComparator(SizeFileComparator.SIZE_COMPARATOR, NameFileComparator.NAME_COMPARATOR)
-            List sorted = comparator.sort(origSourceFiles)
-            List buckets = (0 .. totalSplits).collect{[]}
-            buckets = distributeToBuckets(buckets, sorted)
-            int resultSize = 0
-            buckets.each {List l -> resultSize += l.size() }
-            //Don't want to loose any tests
-            assert resultSize == origSourceFiles.size()
-            return buckets
-        }
-        return [origSourceFiles]
+            if(splitCount > 0 ){
+                CompositeFileComparator comparator = new CompositeFileComparator(SizeFileComparator.SIZE_COMPARATOR, NameFileComparator.NAME_COMPARATOR)
+                List sorted = comparator.sort(candidates)
+                List buckets = distributeToBuckets(splitCount, sorted)
+                int resultSize = 0
+                buckets.each {List l -> resultSize += l.size() }
+                //Don't want to loose any tests
+                assert resultSize == candidates.size()
+                return buckets
+            }else{
+                []
+            }
     }
 
-    public List distributeToBuckets(List<List> listOfLists, List list) {
-        if (null == listOfLists || list.empty) {
-            return [list]
+    public List distributeToBuckets(Integer bucketSize, List list) {
+        if (null == bucketSize || bucketSize == 0) {
+            throw new IllegalArgumentException("Bucket size not specified")
         }
-        else if (listOfLists.size() == 1) {
-            listOfLists.get(0).addAll(list)
-            return listOfLists
-        }
-        else {
-            int bucketCount = listOfLists.size()
+        else  {
+            List buckets = (0 ..< bucketSize).collect{[]}
             int bucketIndex = 0
-
             list.each {f ->
-                listOfLists.get(bucketIndex).add(f)
+                buckets.get(bucketIndex).add(f)
                 bucketIndex++
-                if (bucketIndex == (bucketCount - 1)) {
+                if (bucketIndex == bucketSize) {
                     bucketIndex = 0
                 }
             }
-            return listOfLists
+            return buckets
         }
     }
 }
