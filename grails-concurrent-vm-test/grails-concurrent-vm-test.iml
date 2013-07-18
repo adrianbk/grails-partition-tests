@@ -82,7 +82,6 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="Grails-concurrent-vm-test-grailsPlugins" />
-    <orderEntry type="module" module-name="grails-concurrent-vm-test-grailsPlugins" />
   </component>
 </module>
 

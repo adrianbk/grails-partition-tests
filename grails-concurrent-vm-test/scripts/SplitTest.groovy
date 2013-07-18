@@ -1,36 +1,24 @@
-import org.codehaus.gant.GantBinding
-import org.codehaus.groovy.grails.commons.spring.GrailsApplicationContext
-
 includeTargets << grailsScript("_GrailsInit")
-includeTargets << grailsScript("_GrailsArgParsing")
-includeTargets << grailsScript("_GrailsSettings")
 includeTargets << grailsScript("_GrailsTest")
-includeTargets << grailsScript("_GrailsBootstrap")
-includeTargets << grailsScript("_GrailsEvents")
 def log = {msg ->
-    println msg
-
+    grailsConsole.log(msg)
 }
-
-log grailsSettings
-GantBinding b = binding
-def m = metadata
-log m
-target(splitTest: "The description of the script goes here!") {
-    event("StatusTestStart", ["Split Test Started"])
-    log config
-    //Load App to load app context in GrailsBootstrap
-//    depends(loadApp)
-//    GrailsApplicationContext context = appCtx
-
-
-    // TODO: Implement script here
-    log("Called!")
-    log("Called with arguments: $argsMap")
-
-
-
-
+def error = {msg ->
+    grailsConsole.error(msg)
 }
+//grails splitTest unit "--split=1" "--totalSplits=3"
+target(splitTest: "Splits each the files to run in each grails test phase.") {
+    if(!argsMap.split|| !argsMap.totalSplits){
+        error("Both arguments: split and totalSplits must be suppplied e.g(grails splitTest unit \"--split=1\" \"--totalSplits=3)")
+        exit(0)
+    }
+    Integer split = Integer.valueOf(argsMap.split)
+    Integer totalSplits = Integer.valueOf(argsMap.totalSplits)
+    getBinding().setVariable('split', split)
+    getBinding().setVariable('totalSplits', totalSplits)
 
+    log "** Running Tests in split mode. Rinning split (${split}) of (${totalSplits}) split${totalSplits > 1 ? "'s" : 's'}**"
+    log("Reading input params")
+    allTests()
+}
 setDefaultTarget(splitTest)

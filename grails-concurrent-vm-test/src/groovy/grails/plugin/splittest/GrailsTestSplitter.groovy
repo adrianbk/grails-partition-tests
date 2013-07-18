@@ -4,14 +4,11 @@ import org.apache.commons.io.comparator.CompositeFileComparator
 import org.apache.commons.io.comparator.SizeFileComparator
 import org.apache.commons.io.comparator.NameFileComparator
 
-/**
- * User: Adrian Kelly - DiUS 
- * Date: 18/07/13
- * Time: 8:50 PM
- */
 class GrailsTestSplitter {
     Integer currentSplit
     Integer totalSplits
+    List candidateFiles
+    List splitFiles
 
     GrailsTestSplitter(Integer currentSplit, Integer totalSplits) {
         this.currentSplit = currentSplit
@@ -47,6 +44,7 @@ class GrailsTestSplitter {
             List buckets = (0..<bucketSize).collect {[]}
             int bucketIndex = 0
             list.each {f ->
+
                 buckets.get(bucketIndex).add(f)
                 bucketIndex++
                 if (bucketIndex == bucketSize) {
@@ -57,18 +55,16 @@ class GrailsTestSplitter {
         }
     }
 
-
     def eachSourceFileHotReplace = {Closure body ->
         testTargetPatterns.each { testTargetPattern ->
-            println("Getting sources files for Split: ${currentSplit}, Test Target Pattern: ${testTargetPattern}")
+            println("Getting sources files for Split: ${currentSplit} of ${totalSplits} | Test Type: ${getName()} | Test Target Pattern: ${testTargetPattern}")
             def allFiles = findSourceFiles(testTargetPattern)
-            println("All source files : ${allFiles}")
+            println("All source files: ${allFiles}")
             def splitSourceFiles = getFilesForThisSplit(currentSplit, allFiles)
+            println("Split source files: ${splitSourceFiles}")
             splitSourceFiles.each { sourceFile ->
                 body(testTargetPattern, sourceFile)
             }
         }
-
     }
-
 }

@@ -3,7 +3,7 @@ package grails.plugin.splittest
 import spock.lang.Specification
 import spock.lang.Unroll
 
-class GrailsSplitTestTypeSpec extends Specification{
+class GrailsTestSplitterSpec extends Specification{
 
     @Unroll
     def "sort and split files"(){
@@ -17,9 +17,9 @@ class GrailsSplitTestTypeSpec extends Specification{
         Collections.shuffle(files)
 
         when:
-        GrailsSplitTestType grailsSplitTestType = new GrailsSplitTestType(null, 1, 1, 1, 1)
-        grailsSplitTestType.metaClass.overrideSourceFileCollection = {}
-        List splitResults = grailsSplitTestType.collateSourceFiles(files, totalSplits)
+
+        GrailsTestSplitter grailsTestSplitter = new GrailsTestSplitter(1, totalSplits)
+        List splitResults = grailsTestSplitter.collateSourceFiles(files, totalSplits)
 
         then:
         splitResults.size() == expectedSplit.size()
