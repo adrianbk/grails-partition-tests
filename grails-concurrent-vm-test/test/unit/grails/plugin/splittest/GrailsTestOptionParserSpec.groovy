@@ -7,7 +7,7 @@ class  GrailsTestOptionParserSpec extends Specification {
 
     def "successfully parse test phases"(){
        expect: true
-        println ("COUNT: " +count++)
+        println ("GrailsTestOptionParserSpec Execution Count: " +count++)
 
     }
 

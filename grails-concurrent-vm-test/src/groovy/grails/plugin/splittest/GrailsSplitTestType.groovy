@@ -20,27 +20,21 @@ class GrailsSplitTestType implements GrailsTestType{
     List shardTestClasses = []
     List splitTestClasses = []
 
-
-    GrailsSplitTestType(GrailsTestTypeSupport grailsTestTypeSupport, Integer splitNumber, Integer totalSplits, Integer totalShards) {
+    GrailsSplitTestType(GrailsTestTypeSupport grailsTestTypeSupport, Integer splitNumber, Integer totalSplits, Integer totalShards, Integer shardNumber) {
+        this.grailsTestTypeSupport  = grailsTestTypeSupport
         this.splitNumber = splitNumber
         this.totalSplits = totalSplits
         this.totalShards = totalShards
+        this.shardNumber = shardNumber
         validateSplits()
-        this.grailsTestTypeSupport = grailsTestTypeSupport
+    }
+
+    public String toString(){
+        return "Split: ${splitNumber} | Shard: ${shardNumber} | Shard Classes: ${shardTestClasses} | Split Classes: ${splitTestClasses}"
     }
 
 
-    @Override
-    int prepare(GrailsTestTargetPattern[] testTargetPatterns, File compiledClassesDir, Binding buildBinding) {
-        grailsTestTypeSupport.prepare(testTargetPatterns, compiledClassesDir, buildBinding)
-    }
-
-    @Override
-    GrailsTestTypeResult run(GrailsTestEventPublisher eventPublisher) {
-        grailsTestTypeSupport.run(eventPublisher)
-    }
-
-    /**
+  /**
      * This is a bit nasty but in order to control the classes to run - override the eachSourceFile closure of
      * every sub class of GrailsTestType
      * Both Junit and Spock test types use this closure to find the files to run
@@ -50,17 +44,19 @@ class GrailsSplitTestType implements GrailsTestType{
         splitTestClasses = []
 
         //Note this is usually called twice by TestTypes - once on prepare and again when running
-        this.grailsTestTypeSupport.metaClass.eachSourceFile = {Closure body ->
+        grailsTestTypeSupport.metaClass.eachSourceFile = {Closure body ->
             testTargetPatterns.each { testTargetPattern ->
+                //ToDO = Thhis is always one and one
+                println("Getting sources files for Split: ${splitNumber} And Shard: ${shardNumber}")
                 def allFiles = findSourceFiles(testTargetPattern)
                 def splitSourceFiles = getFilesForThisSplit(splitNumber, allFiles)
                 splitTestClasses.addAll(splitSourceFiles)
-                println("splitSourceFiles:" + splitSourceFiles)
+//                println("splitSourceFiles:" + splitSourceFiles)
                 if(splitSourceFiles.size() > 0){
                     def shardedFiles = getFilesForCurrentShard(shardNumber, splitSourceFiles)
 //                    println("shardedFiles:" + shardedFiles)
 
-                    shardTestClasses .addAll(shardedFiles)
+                    shardTestClasses.addAll(shardedFiles)
                     shardedFiles.each { sourceFile ->
                         body(testTargetPattern, sourceFile)
                     }
@@ -122,4 +118,6 @@ class GrailsSplitTestType implements GrailsTestType{
             return buckets
         }
     }
+
+
 }

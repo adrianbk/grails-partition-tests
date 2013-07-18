@@ -19,11 +19,14 @@ class GrailsTestTypeRunner implements Callable<GrailsSplitTestTypeResult>{
 
     @Override
     GrailsSplitTestTypeResult call() {
-//        if(shard == 1){
-//            Thread.currentThread().sleep(4000L)
-//        }
+
         GrailsSplitTestTypeResult result = new GrailsSplitTestTypeResult()
         result.start = new Date()
+        if(shard == 1){
+            Thread.sleep(2000L)
+        }else{
+            Thread.sleep(5000L)
+        }
         result.phase = phase
         result.split = split
         result.shard = shard
@@ -31,7 +34,7 @@ class GrailsTestTypeRunner implements Callable<GrailsSplitTestTypeResult>{
         result.splitTestClasses = splitTestClasses
         GrailsTestTypeResult grailsTestTypeResult = testType.run(testEventPublisher)
         result.finish = new Date()
-        result.grailsTestTypeResult = new JUnit4ResultGrailsTestTypeResultAdapter(new Result())
+        result.grailsTestTypeResult = grailsTestTypeResult//new JUnit4ResultGrailsTestTypeResultAdapter(new Result())
         return result
     }
 }

@@ -17,7 +17,7 @@ class GrailsSplitTestTypeSpec extends Specification{
         Collections.shuffle(files)
 
         when:
-        GrailsSplitTestType grailsSplitTestType = new GrailsSplitTestType(null, 1, 1, 1)
+        GrailsSplitTestType grailsSplitTestType = new GrailsSplitTestType(null, 1, 1, 1, 1)
         grailsSplitTestType.metaClass.overrideSourceFileCollection = {}
         List splitResults = grailsSplitTestType.collateSourceFiles(files, totalSplits)
 
