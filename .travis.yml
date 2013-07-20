@@ -14,7 +14,8 @@ branches:
 #- source ~/.gvm/bin/gvm-init.sh
 #- source ~/.gvm/bin/gvm-init.sh
 #- gvm install grails 2.2.2
-#- gvm use grails 2.2.2
-before_install:
-- chmod 775 grailsw
+#- gvm use grails 2.2.
+
+before_script:
+ - chmod +x grailsw
 script: ./grailsw clean; ./grailsw test-app
