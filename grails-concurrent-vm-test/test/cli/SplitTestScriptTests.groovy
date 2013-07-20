@@ -15,17 +15,35 @@ class SplitTestScriptTests extends AbstractCliTestCase{
 
     @Override
     protected void tearDown() {
-        println """
---------------------------------Script output---------------------
-${output}
-"""
+        println "--------------------------------Script output---------------------${output}"
     }
 
-    void testCommandLineArgs(){
-        execute(['split-test'])
+
+    void testShouldRequireBothArgs(){
+        execute(['split-test "--skip"'])
         assert 0 == waitForProcess()
-
         verifyHeader()
+        assert output.contains('split and totalSplits must be suppplied')
     }
+
+    void testShouldRequireCurrentSplitLessThanTotalSplits(){
+        execute(['split-test',  '--skip', "--split=2",  "--totalSplits=1"])
+        assert 0 == waitForProcess()
+        assert output.contains(' must not be greater than totalSplits')
+    }
+
+    void testShouldNotAllowNegativeSplits(){
+        execute(['split-test',  '--skip', "--split=-1",  "--totalSplits=-3"])
+        assert 0 == waitForProcess()
+        assert output.contains('Split arguments must not be negative!')
+    }
+
+    void testValidSplits(){
+        execute(['split-test',  '--skip', "--split=1",  "--totalSplits=3"])
+        assert 0 == waitForProcess()
+        assert output.contains("** Running Tests in split mode. Rinning split (1) of (${3}) split's**")
+    }
+
+
 }
 

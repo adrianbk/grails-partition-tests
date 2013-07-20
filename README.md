@@ -19,3 +19,7 @@ Run the splits on each vm (or locally)
 - Should be able to run without above event listener i.e. stand alone
 - nice to have
 -- Allow each split to run in parallel using groovy ProcessBuilder
+
+
+
+split-test "--totalSplits=1" "--split=1"
