@@ -4,15 +4,18 @@ jdk:
 branches:
   only:
   - master
-before_install:
-- rm -rf ~/.gvm
-- curl -s get.gvmtool.net > ~/install_gvm.sh
-- chmod 775 ~/install_gvm.sh
-- ~/install_gvm.sh
-- echo "gvm_auto_answer=true" > ~/.gvm/etc/config
-- curl -s https://raw.github.com/ctoestreich/gvm/master/src/main/bash/gvm-install.sh > ~/.gvm/src/gvm-install.sh
-- source ~/.gvm/bin/gvm-init.sh
-- gvm install grails 2.2.1
-- gvm use grails 2.2.1
+#before_install:
+#- rm -rf ~/.gvm
+#- curl -s get.gvmtool.net > ~/install_gvm.sh
+#- chmod 775 ~/install_gvm.sh
+#- ~/install_gvm.sh
+#- echo "gvm_auto_answer=true" > ~/.gvm/etc/config
+#- curl -s https://raw.github.com/ctoestreich/gvm/master/src/main/bash/gvm-install.sh > ~/.gvm/src/gvm-install.sh
+#- source ~/.gvm/bin/gvm-init.sh
+#- source ~/.gvm/bin/gvm-init.sh
+#- gvm install grails 2.2.2
+#- gvm use grails 2.2.2
+#
+#script: grails test-app
 
-script: grails test-app --non-interactive
+script: ./grailsw clean; ./grailsw test-app
