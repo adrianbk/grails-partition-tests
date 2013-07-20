@@ -18,4 +18,7 @@ branches:
 
 before_script:
  - chmod +x grailsw
-script: ./grailsw clean; ./grailsw test-app, ./grailsw package-plugin
+script: ./grailsw clean; ./grailsw test-app; ./grailsw package-plugin;
+
+after_success:
+  - git commit -a -m "Committed by Travis-CI build number: $TRAVIS_JOB_ID"
