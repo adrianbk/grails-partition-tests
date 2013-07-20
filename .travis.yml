@@ -4,27 +4,6 @@ jdk:
 branches:
   only:
   - master
-#before_install:
-#- rm -rf ~/.gvm
-#- curl -s get.gvmtool.net > ~/install_gvm.sh
-#- chmod 775 ~/install_gvm.sh
-#- ~/install_gvm.sh
-#- echo "gvm_auto_answer=true" > ~/.gvm/etc/config
-#- curl -s https://raw.github.com/ctoestreich/gvm/master/src/main/bash/gvm-install.sh > ~/.gvm/src/gvm-install.sh
-#- source ~/.gvm/bin/gvm-init.sh
-#- source ~/.gvm/bin/gvm-init.sh
-#- gvm install grails 2.2.2
-#- gvm use grails 2.2.
-
 before_script:
  - chmod +x grailsw
 script: ./grailsw clean; ./grailsw test-app; ./grailsw package-plugin;
-
-after_success:
-
-  - git push deploy
-
-after_success:
-  - chmod 600 .travis/deploy_key.pem # this key should have push access
-  - ssh-add .travis/deploy_key.pem
-  - git commit -a -m "Committed by Travis-CI build number: $TRAVIS_JOB_ID"
