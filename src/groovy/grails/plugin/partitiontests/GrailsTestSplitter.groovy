@@ -60,9 +60,9 @@ class GrailsTestSplitter {
         testTargetPatterns.each { testTargetPattern ->
             println("Getting sources files for Split: ${currentSplit} of ${totalSplits} | Test Type: ${getName()} | Test Target Pattern: ${testTargetPattern}")
             def allFiles = findSourceFiles(testTargetPattern)
-            println("All source files: ${allFiles}")
+            println("All source files size: ${allFiles?.size()}")
             def splitSourceFiles = getFilesForThisSplit(currentSplit, allFiles)
-            println("Split source files: ${splitSourceFiles}")
+            println("Split source files size:  ${splitSourceFiles?.size()}")
             splitSourceFiles.each { sourceFile ->
                 body(testTargetPattern, sourceFile)
             }

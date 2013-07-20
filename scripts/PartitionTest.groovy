@@ -42,7 +42,7 @@ target(partitionTests: "Splits all grails test files based on arguments: split a
     getBinding().setVariable('split', split)
     getBinding().setVariable('totalSplits', totalSplits)
 
-    log "** Running Tests in split mode. Rinning split (${split}) of (${totalSplits}) split${totalSplits > 1 ? "'s" : 's'}**"
+    log "** Running Tests in partition mode. Split (${split}) of (${totalSplits}) split${totalSplits > 1 ? "'s" : ''} **"
     if (!argsMap.skip) {
         log("Running grails allTests()")
 
