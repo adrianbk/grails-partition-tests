@@ -1,6 +1,6 @@
 class GrailsPartitionTestsGrailsPlugin {
-    def version = "1.0"
-    def grailsVersion = "2.2 > *"
+    def version = "0.1"
+    def grailsVersion = "2.0 > *"
     def pluginExcludes = ["grails-app/views/error.gsp"]
     def title = "Grails Partition Tests Plugin"
     def author = "Adrian Kelly"
