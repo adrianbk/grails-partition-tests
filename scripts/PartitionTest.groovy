@@ -44,7 +44,7 @@ target(partitionTests: "Splits all grails test files based on arguments: split a
 
     log "** Running Tests in partition mode. Split (${split}) of (${totalSplits}) split${totalSplits > 1 ? "'s" : ''} **"
     if (!argsMap.skip) {
-        log("Running grails allTests()")
+        log("Handing off to grais test-app")
 
         /* Calls defalt target in TestApp.groovy
         * A but nasty because if any other targets with name 'default' are included which one gets called?

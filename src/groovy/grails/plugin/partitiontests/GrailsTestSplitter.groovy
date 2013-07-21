@@ -1,7 +1,7 @@
 package grails.plugin.partitiontests
 
 import org.apache.commons.io.comparator.CompositeFileComparator
-import org.apache.commons.io.comparator.NameFileComparator
+import org.apache.commons.io.comparator.PathFileComparator
 import org.apache.commons.io.comparator.SizeFileComparator
 
 class GrailsTestSplitter {
@@ -16,15 +16,17 @@ class GrailsTestSplitter {
     }
 
 
-    public List getFilesForThisSplit(int split, allSourceFiles) {
+    public List getFilesForThisSplit(allSourceFiles) {
         def collated = collateSourceFiles(allSourceFiles, totalSplits)
-        return collated.get(split - 1)
+        return collated.get(currentSplit - 1)
     }
 
     public List collateSourceFiles(List candidates, splitCount) {
-        //Sort should be as deterministic as possible - size and name
+        //Sort should be as deterministic as possible - size and path
         if (splitCount > 0) {
-            CompositeFileComparator comparator = new CompositeFileComparator(SizeFileComparator.SIZE_COMPARATOR, NameFileComparator.NAME_COMPARATOR)
+            CompositeFileComparator comparator = new CompositeFileComparator(
+                    SizeFileComparator.SIZE_COMPARATOR,
+                    PathFileComparator.PATH_INSENSITIVE_COMPARATOR)
             List sorted = comparator.sort(candidates)
             List buckets = distributeToBuckets(splitCount, sorted)
             int resultSize = 0
@@ -61,7 +63,7 @@ class GrailsTestSplitter {
             println("Getting sources files for Split: ${currentSplit} of ${totalSplits} | Test Type: ${getName()} | Test Target Pattern: ${testTargetPattern}")
             def allFiles = findSourceFiles(testTargetPattern)
             println("All source files size: ${allFiles?.size()}")
-            def splitSourceFiles = getFilesForThisSplit(currentSplit, allFiles)
+            def splitSourceFiles = getFilesForThisSplit(allFiles)
             println("Split source files size:  ${splitSourceFiles?.size()}")
             splitSourceFiles.each { sourceFile ->
                 body(testTargetPattern, sourceFile)

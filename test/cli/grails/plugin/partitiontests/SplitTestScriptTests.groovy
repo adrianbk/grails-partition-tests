@@ -45,7 +45,7 @@ class SplitTestScriptTests extends AbstractCliTestCase{
     void testValidSplits(){
         execute([scriptName,  '--skip', "--split=1",  "--totalSplits=3"])
         assert 0 == waitForProcess()
-        assert output.contains("** Running Tests in split mode. Rinning split (1) of (${3}) split's**")
+        assert output.contains("** Running Tests in partition mode. Split (1) of (3) split's **")
     }
 }
 
