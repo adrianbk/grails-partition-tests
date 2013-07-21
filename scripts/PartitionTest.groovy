@@ -22,7 +22,7 @@ def error = {msg ->
     grailsConsole.error(msg)
 }
 //usage: grails partitionTest unit "--split=1" "--totalSplits=3"
-target(partitionTests: "Splits all grails test files based on arguments: split and totalSplits.") {
+target(partitionTests: "Splits all Grails test files based on arguments: split and totalSplits.") {
     if (!argsMap.split || !argsMap.totalSplits) {
         error("Both arguments: split and totalSplits must be suppplied e.g (grails splitTest unit \"--split=1\" \"--totalSplits=3\")")
         exit(0)
