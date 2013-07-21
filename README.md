@@ -1,6 +1,4 @@
-
-[![Build Status](https://travis-ci.org/adrianbk/grails-partition-tests.png)](https://travis-ci.org/adrianbk/grails-partition-tests.png])
-
+[![Build Status](https://travis-ci.org/adrianbk/grails-partition-tests.png)](https://travis-ci.org/adrianbk/grails-partition-tests])
 # Grails Partition Tests Plugin #
 
 Allows for the division of grails tests into partitions with a view to running each partition on a separate machine or process.
