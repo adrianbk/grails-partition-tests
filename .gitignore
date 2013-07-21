@@ -2,3 +2,8 @@
 /grails-partition-tests/target
 /grails-partition-tests/out
 /grails-partition-tests/out
+*.zip
+*.log
+plugin.xml
+web-app
+target
