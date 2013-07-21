@@ -18,7 +18,7 @@ grails partition-test "--split=1" "--totalSplits=1" --verbose --echoOut --stackt
 ```
 identiacal to :
 ```shell 
-grails test-app "--split=1" "--totalSplits=1" --verbose --echoOut --stacktrace
+grails test-app --verbose --echoOut --stacktrace
 ```
 
 Run the 1st half of all of the applications tests for all test phases and test types
@@ -36,7 +36,7 @@ partition-test functional:spock "--split=2" "--totalSplits=50"
 ```
 
 ### Deterministic splits ###
-The test files are distributed across partitions based on a composite sort in the following order:
+The test files are distributed across partitions based on a composite sort in the following order
 1. Test file size
 2. Test file path
 
@@ -46,9 +46,8 @@ If two test files have the same size and name (same file names but in different 
 
 
 ### Limitations ###
-1.	Relies on any custom test types in your application to extend from GrailsTestTypeSupport (as is the standard grails way to add additional test types). 
-The default grails test type is: JUnit4GrailsTestType
-Spock uses :GrailsSpecTestType
-2.	All test types that must use the following method to locate test source files : 
-GrailsTestTypeSupport -protected void eachSourceFile(Closure body) {
+1. Relies on any custom test types in your application to extend from GrailsTestTypeSupport (as is the standard grails way to add additional test types).
+	* The default grails test type is: JUnit4GrailsTestType
+	* Spock uses :GrailsSpecTestType
+2. All test types must use the must use the `GrailsTestTypeSupport.eachSourceFile(Closure body) {..}` closure to locate it's test source files
 
