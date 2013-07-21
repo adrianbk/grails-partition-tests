@@ -8,6 +8,10 @@ Allows for the division of grails tests into partitions with a view to running e
 ## Overview ##
 As the number of tests in a grails application increases, build times can become excessively long - particularly with a large number of functional tests. A typical strategy to overcome this, on a continuous integration build, is to divide the build/test process into splits and have each split run on separate slaves in parallel. Grails provides a way to run specific test phases, test types and test patterns, it does not however provide a straightforward way to run partitioned tests i.e. “run half of all functional tests’. This plugin facilitates partitioning of tests for any given ‘grails test-app’ command by supplying 2 extra arguments: ‘split’ and ‘totalSplits’
 
+## Installing ##
+Download packaged plugin to <some location> (https://github.com/adrianbk/grails-partition-tests/blob/master/grails-partition-tests-0.1.zip)
+```shell grails install-plugin <some_location>/grails-partition-tests-0.1.zip```
+
 ### Usage ###
 The partition-test command takes all of the same arguments that test-app takes with the addition of the arguments: ‘split’ and ‘totalSplits’ (both are required)
 
