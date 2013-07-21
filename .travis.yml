@@ -6,4 +6,4 @@ branches:
   - master
 before_script:
  - chmod +x grailsw
-script: ./grailsw clean; ./grailsw test-app; ./grailsw package-plugin;
+script: ./grailsw clean; ./grailsw test-app --unit; ./grailsw package-plugin;

@@ -23,7 +23,6 @@ class SplitTestScriptTests extends AbstractCliTestCase{
         assert true
     }
 
-    @Ignore
     void testShouldRequireBothArgs(){
         execute([scriptName,  '--skip'])
         assert 0 == waitForProcess()
@@ -31,21 +30,18 @@ class SplitTestScriptTests extends AbstractCliTestCase{
         assert output.contains('split and totalSplits must be suppplied')
     }
 
-    @Ignore
-    void testShouldRequireCurrentSplitLessThanTotalSplits(){
+   void testShouldRequireCurrentSplitLessThanTotalSplits(){
         execute([scriptName,  '--skip', "--split=2",  "--totalSplits=1"])
         assert 0 == waitForProcess()
         assert output.contains(' must not be greater than totalSplits')
     }
 
-    @Ignore
     void testShouldNotAllowNegativeSplits(){
         execute([scriptName,  '--skip', "--split=-1",  "--totalSplits=-3"])
         assert 0 == waitForProcess()
         assert output.contains('Split arguments must not be negative!')
     }
 
-    @Ignore
     void testValidSplits(){
         execute([scriptName,  '--skip', "--split=1",  "--totalSplits=3"])
         assert 0 == waitForProcess()
