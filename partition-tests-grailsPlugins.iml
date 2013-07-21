@@ -22,7 +22,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="grails-2.2.2" level="application" />
     <orderEntry type="module-library" exported="">
-      <library name="Grails User Library (Grails-partition-tests-grailsPlugins)">
+      <library name="Grails User Library (partition-tests-grailsPlugins)">
         <CLASSES>
           <root url="jar://$USER_HOME$/.grails/ivy-cache/org.hamcrest/hamcrest-core/jars/hamcrest-core-1.3.jar!/" />
           <root url="jar://$USER_HOME$/.grails/ivy-cache/junit/junit-dep/jars/junit-dep-4.10.jar!/" />

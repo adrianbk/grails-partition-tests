@@ -1,4 +1,4 @@
-class GrailsPartitionTestsGrailsPlugin {
+class PartitionTestsGrailsPlugin {
     def version = "0.1"
     def grailsVersion = "2.0 > *"
     def pluginExcludes = ["grails-app/views/error.gsp"]

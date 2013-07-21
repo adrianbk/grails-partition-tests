@@ -14,7 +14,7 @@ The partition-test command takes all of the same arguments that test-app takes w
 
 Run all tests across all test phases with some optional grails test-app arguments 
 ```shell
-grails partition-test "--split=1" "--totalSplits=1" --verbose --echoOut --stacktrace
+grails test partition-test "--split=1" "--totalSplits=1" --verbose --echoOut --stacktrace
 ```
 identiacal to :
 ```shell 
@@ -23,16 +23,16 @@ grails test-app --verbose --echoOut --stacktrace
 
 Run the 1st half of all of the applications tests for all test phases and test types
 ```shell 
-grails partition-test "--split=1" "--totalSplits=2"
+grails test partition-test "--split=1" "--totalSplits=2"
 ```
 
 Run the 1st third of all spock tests in the unit test phase
 ```shell 
-grails  partition-test unit:spock "--split=1" "--totalSplits=3"
+grails test partition-test unit:spock "--split=1" "--totalSplits=3"
 ```
 Run the 2nd fiftieth of all spock test in the functional test phase
 ```shell 
-partition-test functional:spock "--split=2" "--totalSplits=50"
+grails test partition-test functional:spock "--split=2" "--totalSplits=50"
 ```
 
 ### Deterministic splits ###
@@ -49,5 +49,6 @@ If two test files have the same size and name (same file names but in different 
 1. Relies on any custom test types in your application to extend from GrailsTestTypeSupport (as is the standard grails way to add additional test types).
 	* The default grails test type is: JUnit4GrailsTestType
 	* Spock uses :GrailsSpecTestType
-2. All test types must use the must use the `GrailsTestTypeSupport.eachSourceFile(Closure body) {..}` closure to locate it's test source files
-
+2. All test types must use the `GrailsTestTypeSupport.eachSourceFile(Closure body) {..}` closure to locate it's test source files
+3. Grails environment must be specified as setting scriptEnv="test" in PartitionTest.groovy does not set the environment to test as expected
+    * `grails test partition-test .... `

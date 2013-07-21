@@ -1,3 +1,4 @@
+scriptEnv="test"
 includeTargets << grailsScript("_GrailsInit")
 includeTargets << grailsScript("_GrailsTest")
 includeTargets << grailsScript("TestApp")
@@ -46,7 +47,7 @@ target(partitionTests: "Splits all grails test files based on arguments: split a
     if (!argsMap.skip) {
         log("Handing off to grais test-app")
 
-        /* Calls defalt target in TestApp.groovy
+        /* Calls default target in TestApp.groovy
         * A but nasty because if any other targets with name 'default' are included which one gets called?
         * Don't want to repeat all the logic in TestApp.groovy to resolve test types, phases, arguments, etc.
         */
