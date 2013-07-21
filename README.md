@@ -1,7 +1,5 @@
 
-"https://travis-ci.org/adrianbk/grails-partition-tests.png!":https://travis-ci.org/adrianbk/grails-partition-tests.png
-
-
+[![Build Status](https://travis-ci.org/adrianbk/grails-partition-tests.png)](https://travis-ci.org/adrianbk/grails-partition-tests.png])
 Grails Partition Tests Plugin
 ======================
 
