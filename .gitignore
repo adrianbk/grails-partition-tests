@@ -1,4 +1,3 @@
-/grails-partition-tests/.idea
 /grails-partition-tests/target
 /grails-partition-tests/out
 /grails-partition-tests/out
@@ -7,3 +6,14 @@
 plugin.xml
 web-app
 target
+
+# Eclipse
+.classpath
+.project
+.settings
+
+# IDEA
+*.iml
+*.ipr
+*.iws
+.idea/
