@@ -1,20 +1,24 @@
 [![Build Status](https://travis-ci.org/adrianbk/grails-partition-tests.png)](https://travis-ci.org/adrianbk/grails-partition-tests)
 # Grails Partition Tests Plugin #
 
-Allows for the division of grails tests into partitions with a view to running each partition on a separate machine or process.
+Allows for the division of Grails tests into partitions with a view to running each partition on a separate machine or process.
 
 ## Overview ##
-As the number of tests in a grails application increases, build times can become excessively long - particularly with a large number of functional tests. A typical strategy to overcome this, on a continuous integration build, is to divide the build/test process into splits and have each split run on separate slaves in parallel. Grails provides a way to run specific test phases, test types and test patterns, it does not however provide a straightforward way to run partitioned tests i.e. “run half of all functional tests’. This plugin facilitates partitioning of tests for any given ‘grails test-app’ command by supplying 2 extra arguments: ‘split’ and ‘totalSplits’
+As the number of tests in a Grails application increases, build times can become excessively long - particularly with a large number of functional tests. A typical strategy to overcome this, on a continuous integration build, is to divide the build/test process into splits and have each split run on separate slaves in parallel. Grails provides a way to run specific test phases, test types and test patterns, it does not however provide a straightforward way to run partitioned tests i.e. “run half of all functional tests’. This plugin facilitates partitioning of tests for any given ‘grails test-app’ command by supplying 2 extra arguments: ‘split’ and ‘totalSplits’
 
 ## Installing ##
-Download packaged plugin to <some location> (https://github.com/adrianbk/grails-partition-tests/blob/master/grails-partition-tests-0.1.zip)
-```shell grails install-plugin <some_location>/grails-partition-tests-0.1.zip```
+Add a dependency for the plugin in BuildConfig.groovy:
+
+    plugins {
+       ...
+       test ":partition-tests:0.1"
+    }
 
 ### Usage ###
 The partition-test command takes all of the same arguments that test-app takes with the addition of the arguments: ‘split’ and ‘totalSplits’ (both are required)
 
 
-Run all tests across all test phases with some optional grails test-app arguments 
+Run all tests across all test phases with some optional test-app arguments 
 ```shell
 grails test partition-test "--split=1" "--totalSplits=1" --verbose --echoOut --stacktrace
 ```
@@ -48,8 +52,8 @@ If two test files have the same size and name (same file names but in different 
 
 
 ### Limitations ###
-1. Relies on any custom test types in your application to extend from GrailsTestTypeSupport (as is the standard grails way to add additional test types).
-	* The default grails test type is: JUnit4GrailsTestType
+1. Relies on any custom test types in your application to extend from GrailsTestTypeSupport (as is the standard Grails way to add additional test types).
+	* The default Grails test type is: JUnit4GrailsTestType
 	* Spock uses :GrailsSpecTestType
 2. All test types must use the `GrailsTestTypeSupport.eachSourceFile(Closure body) {..}` closure to locate it's test source files
 3. Grails environment must be specified as setting scriptEnv="test" in PartitionTest.groovy does not set the environment to test as expected

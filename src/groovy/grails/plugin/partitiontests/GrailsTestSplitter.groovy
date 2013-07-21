@@ -15,13 +15,12 @@ class GrailsTestSplitter {
         this.totalSplits = totalSplits
     }
 
-
-    public List getFilesForThisSplit(allSourceFiles) {
+    List getFilesForThisSplit(allSourceFiles) {
         def collated = collateSourceFiles(allSourceFiles, totalSplits)
         return collated.get(currentSplit - 1)
     }
 
-    public List collateSourceFiles(List candidates, splitCount) {
+    List collateSourceFiles(List candidates, splitCount) {
         //Sort should be as deterministic as possible - size and path
         if (splitCount > 0) {
             CompositeFileComparator comparator = new CompositeFileComparator(
@@ -31,7 +30,7 @@ class GrailsTestSplitter {
             List buckets = distributeToBuckets(splitCount, sorted)
             int resultSize = 0
             buckets.each {List l -> resultSize += l.size() }
-            //Don't want to loose any tests
+            //Don't want to lose any tests
             assert resultSize == candidates.size()
             return buckets
         } else {
@@ -39,23 +38,22 @@ class GrailsTestSplitter {
         }
     }
 
-    public List distributeToBuckets(Integer bucketSize, List list) {
-        if (null == bucketSize || bucketSize == 0) {
+    List distributeToBuckets(Integer bucketSize, List list) {
+        if (!bucketSize) {
             throw new IllegalArgumentException("Bucket size not specified")
         }
-        else {
-            List buckets = (0..<bucketSize).collect {[]}
-            int bucketIndex = 0
-            list.each {f ->
 
-                buckets.get(bucketIndex).add(f)
-                bucketIndex++
-                if (bucketIndex == bucketSize) {
-                    bucketIndex = 0
-                }
+        List buckets = (0..<bucketSize).collect {[]}
+        int bucketIndex = 0
+        list.each {f ->
+
+            buckets.get(bucketIndex).add(f)
+            bucketIndex++
+            if (bucketIndex == bucketSize) {
+                bucketIndex = 0
             }
-            return buckets
         }
+        return buckets
     }
 
     def eachSourceFileHotReplace = {Closure body ->
