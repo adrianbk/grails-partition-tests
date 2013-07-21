@@ -45,7 +45,7 @@ target(partitionTests: "Splits all Grails test files based on arguments: split a
 
     log "** Running Tests in partition mode. Split (${split}) of (${totalSplits}) split${totalSplits > 1 ? "'s" : ''} **"
     if (!argsMap.skip) {
-        log("Handing off to grais test-app")
+        log("Handing off to grails test-app")
 
         /* Calls default target in TestApp.groovy
         * A but nasty because if any other targets with name 'default' are included which one gets called?
