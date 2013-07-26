@@ -1,6 +1,6 @@
 /grails-partition-tests/target
 /grails-partition-tests/out
-/grails-partition-tests/out
+out/
 *.zip
 *.log
 plugin.xml

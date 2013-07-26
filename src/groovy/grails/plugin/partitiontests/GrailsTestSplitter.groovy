@@ -1,14 +1,14 @@
 package grails.plugin.partitiontests
 
 import org.apache.commons.io.comparator.CompositeFileComparator
+import org.apache.commons.io.comparator.DirectoryFileComparator
+import org.apache.commons.io.comparator.NameFileComparator
 import org.apache.commons.io.comparator.PathFileComparator
 import org.apache.commons.io.comparator.SizeFileComparator
 
 class GrailsTestSplitter {
     Integer currentSplit
     Integer totalSplits
-    List candidateFiles
-    List splitFiles
 
     GrailsTestSplitter(Integer currentSplit, Integer totalSplits) {
         this.currentSplit = currentSplit
@@ -24,8 +24,8 @@ class GrailsTestSplitter {
         //Sort should be as deterministic as possible - size and path
         if (splitCount > 0) {
             CompositeFileComparator comparator = new CompositeFileComparator(
-                    SizeFileComparator.SIZE_COMPARATOR,
-                    PathFileComparator.PATH_INSENSITIVE_COMPARATOR)
+                    SizeFileComparator.SIZE_REVERSE,
+                    PathFileComparator.PATH_COMPARATOR)
             List sorted = comparator.sort(candidates)
             List buckets = distributeToBuckets(splitCount, sorted)
             int resultSize = 0

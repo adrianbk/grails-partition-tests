@@ -1,11 +1,15 @@
 package grails.plugin.partitiontests
 
+import org.apache.commons.io.FileUtils
+import org.apache.commons.lang.RandomStringUtils
 import spock.lang.Specification
 import spock.lang.Unroll
 
 import java.util.regex.Matcher
 
 class GrailsTestSplitterSpec extends Specification {
+
+
     @Unroll
     def "Files are distributed correctly to the first partition"() {
       given: 'a list of files'
@@ -70,6 +74,51 @@ class GrailsTestSplitterSpec extends Specification {
         2          | 1           | 1     | ['/p0/name', '/p1/name']
         9          | 2           | 2     | ['/p1/name', '/p3/name', '/p5/name', '/p7/name']
 
+    }
+
+    def "Files should be ordered by decreasing size and the path(secondary)"() {
+      given:
+        def totalDirs = 2
+        def numFiles = 4
+        def ROOT = './gtemp'
+
+        def files = []
+        (0..<totalDirs).each{ d ->
+            File dir = new File(fs("$ROOT/${(d % 2 == 0) ? 'a' : 'b'}"))
+            FileUtils.forceMkdir(dir)
+            (0..<numFiles).each { f ->
+                def testFile = new File("${dir}/file${f}.txt")
+                String random = randomString(10 * (f + 1))
+                FileUtils.write(testFile, random )
+                files.add(testFile)
+            }
+        }
+        Collections.shuffle(files)
+        files = files.reverse()
+
+      when:
+        GrailsTestSplitter grailsTestSplitter = new GrailsTestSplitter(1, 1)
+        List splitResults = grailsTestSplitter.getFilesForThisSplit(files)
+        def collected = files.collect{it.path}
+        FileUtils.deleteQuietly(new File(fs("$ROOT")))
+
+      then:
+        splitResults.size() == 8
+        //files sizes descending 3, 2, 1, 0
+        collected == [
+                fs("$ROOT/a/file3.txt" ),
+                fs("$ROOT/b/file3.txt" ),
+                fs("$ROOT/a/file2.txt" ),
+                fs("$ROOT/b/file2.txt" ),
+                fs("$ROOT/a/file1.txt" ),
+                fs("$ROOT/b/file1.txt" ),
+                fs("$ROOT/a/file0.txt" ),
+                fs("$ROOT/b/file0.txt" )
+        ]
+    }
+
+    def randomString(int length){
+        return RandomStringUtils.random(length, 'W')
     }
 
     def fs = {String fileRepresentation ->

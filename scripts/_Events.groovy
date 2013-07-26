@@ -13,6 +13,8 @@ eventTestCompileStart = {testType ->
         def splitClass = classLoader.loadClass('grails.plugin.partitiontests.GrailsTestSplitter')
         def splitter = splitClass.newInstance(split, totalSplits)
         testType.metaClass.eachSourceFile = splitter.eachSourceFileHotReplace
+        testType.metaClass.testSplitter  = splitter
+
     } catch (Throwable t) {
         grailsConsole.error("Could not add split support", t)
     }
