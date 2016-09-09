@@ -19,4 +19,9 @@ branches:
   - master
 before_script:
  - chmod +x grailsw
-script: grails clean; grails test-app --unit; grails package-plugin;
+
+script: sdk use grails $GRAILS_VERSION &&
+        grails upgrade --non-interactive &&
+        grails clean &&
+        grails test-app --unit &&
+        grails package-plugin
