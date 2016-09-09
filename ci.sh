@@ -12,8 +12,10 @@ grails clean
 
 if [ $nVersion -lt 240 ]
 then
+  echo "Using 'grails upgrade' to upgrade application"
   grails upgrade --non-interactive
 else
+  echo "Using 'set-version' to upgrade application"
   grails set-version $GRAILS_VERSION
 fi
 
