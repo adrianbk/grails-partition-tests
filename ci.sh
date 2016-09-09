@@ -5,6 +5,7 @@ nVersion="${GRAILS_VERSION//.}";
 
 echo "Using a Grails version of $GRAILS_VERSION"
 
+source "/home/travis/.sdkman/bin/sdkman-init.sh"
 sdk use grails $GRAILS_VERSION
 
 grails clean
