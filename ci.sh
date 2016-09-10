@@ -13,7 +13,7 @@ source "/home/travis/.sdkman/bin/sdkman-init.sh"
 sdk use grails $GRAILS_VERSION
 
 
-cd "grails-partition-test"
+cd "grails-partition-tests"
 grails clean
 
 if (( $major <= 2 && $minor < 4 ))
