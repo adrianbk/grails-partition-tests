@@ -22,7 +22,8 @@ grails.project.dependency.resolution = {
 
     log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     checksums true // Whether to verify checksums on resolve
-    legacyResolve false // whether to do a secondary resolve on plugin installation, not advised and here for backwards compatibility
+    legacyResolve false
+    // whether to do a secondary resolve on plugin installation, not advised and here for backwards compatibility
 
     repositories {
         inherits true // Whether to inherit repository definitions from plugins
@@ -45,12 +46,6 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        runtime ":jquery:1.8.3"
-        runtime ":resources:1.1.6"
-        // Uncomment these (or add new ones) to enable additional resources capabilities
-        //runtime ":zipped-resources:1.0"
-        //runtime ":cached-resources:1.0"
-        //runtime ":yui-minify-resources:0.1.5"
         compile ":partition-tests:0.2"
         test(":spock:0.7") {
             exclude "spock-grails-support"
