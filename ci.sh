@@ -30,7 +30,7 @@ grails test-app --unit
 grails package-plugin
 
 
-cd "app"
+cd "../app"
 if (( $major <= 2 && $minor < 4 ))
 then
   echo "Using 'grails upgrade' to upgrade application"
