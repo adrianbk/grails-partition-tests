@@ -58,3 +58,9 @@ If two test files have the same size and name (same file names but in different 
 2. All test types must use the `GrailsTestTypeSupport.eachSourceFile(Closure body) {..}` closure to locate it's test source files
 3. Grails environment must be specified as setting scriptEnv="test" in PartitionTest.groovy does not set the environment to test as expected
     * `grails test partition-test .... `
+
+
+### Development
+The root directory contains 2 grails projects. `grails-partition-tests` and `app`. `grails-partition-tests` is the plugin source
+and `app` is a basic grails app with some tests which can be use to verify the plugin. `app` is configured with `grails.plugin.location.'partition-tests'`
+  which means the plugin is used "in-place". See [ci.sh](ci.sh) for the grails commands used to test both the app and plugin.
