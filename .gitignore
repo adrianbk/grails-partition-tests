@@ -1,11 +1,9 @@
-/grails-partition-tests/target
-/grails-partition-tests/out
+target/
 out/
 *.zip
 *.log
 plugin.xml
-web-app
-target
+grails-partition-tests/web-app
 
 # Eclipse
 .classpath
@@ -17,3 +15,4 @@ target
 *.ipr
 *.iws
 .idea/
+.slcache/
