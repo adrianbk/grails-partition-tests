@@ -1,19 +1,21 @@
 grails.project.work.dir = 'target'
-
+grails.project.dependency.resolver = 'maven'
 grails.project.dependency.resolution = {
 
     inherits 'global'
     log 'warn'
 
     repositories {
+        mavenCentral()
         grailsCentral()
         mavenLocal()
-        mavenCentral()
         mavenRepo "https://repo.grails.org/grails/repo"
     }
 
     dependencies {
         test "org.spockframework:spock-grails-support:0.7-groovy-2.0"
+        test 'org.hamcrest:hamcrest-all:1.3'
+        compile 'commons-io:commons-io:2.4'
     }
 
     plugins {

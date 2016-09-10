@@ -20,6 +20,7 @@ then
 else
   echo "Using 'set-version' to upgrade application"
   grails set-version $GRAILS_VERSION
+  grails set-grails-version $GRAILS_VERSION
 fi
 
 grails test-app --unit
