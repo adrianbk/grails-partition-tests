@@ -10,7 +10,7 @@ eventTestCompileStart = {testType ->
     Integer split = Integer.valueOf(binding.getVariable('split'))
 
     try {
-        def splitClass = classLoader.loadClass('grails.plugin.partitiontests.GrailsTestSplitter')
+        def splitClass = this.class.classLoader.loadClass('grails.plugin.partitiontests.GrailsTestSplitter')
         def splitter = splitClass.newInstance(split, totalSplits)
         testType.metaClass.eachSourceFile = splitter.eachSourceFileHotReplace
         testType.metaClass.testSplitter  = splitter
