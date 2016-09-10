@@ -27,6 +27,7 @@ grails.project.dependency.resolution = {
     repositories {
         inherits true // Whether to inherit repository definitions from plugins
         grailsCentral()
+        mavenRepo "https://repo.grails.org/grails/repo"
         mavenRepo "https://repo.grails.org/grails/core"
         mavenRepo "http://mvnrepository.com/artifact/"
         mavenRepo "http://download.java.net/maven/2/"
