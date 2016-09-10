@@ -50,7 +50,6 @@ grails.project.dependency.resolution = {
         //runtime ":zipped-resources:1.0"
         //runtime ":cached-resources:1.0"
         //runtime ":yui-minify-resources:0.1.5"
-        compile ':cache:1.0.1'
         compile ":partition-tests:0.2"
         test(":spock:0.7") {
             exclude "spock-grails-support"
