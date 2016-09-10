@@ -12,6 +12,7 @@ grails.project.source.level = 1.6
 //]
 
 grails.plugin.location.'partition-tests' = "./../grails-partition-tests/"
+grails.project.dependency.resolver = "maven"
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
     inherits("global") {
