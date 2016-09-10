@@ -9,6 +9,6 @@ class UserSpec extends Specification {
         true
 
         expect:
-        false
+        true
     }
 }

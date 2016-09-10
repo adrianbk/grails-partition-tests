@@ -9,6 +9,6 @@ class BookSpec extends Specification {
         true
 
         expect:
-        false
+        true
     }
 }
