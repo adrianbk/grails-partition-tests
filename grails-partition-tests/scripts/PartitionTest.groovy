@@ -25,19 +25,19 @@ def error = {msg ->
 target(partitionTests: "Splits all Grails test files based on arguments: split and totalSplits.") {
     if (!argsMap.split || !argsMap.totalSplits) {
         error("Both arguments: split and totalSplits must be suppplied e.g (grails splitTest unit \"--split=1\" \"--totalSplits=3\")")
-        exit(0)
+        exit(1)
     }
     Integer split = Integer.valueOf(argsMap.split)
     Integer totalSplits = Integer.valueOf(argsMap.totalSplits)
 
     if(split < 0 || totalSplits < 0 ){
         error('Split arguments must not be negative!')
-        exit(0)
+        exit(1)
     }
 
     if (split > totalSplits) {
         error("Split(${split}) must not be greater than totalSplits(${totalSplits})")
-        exit(0)
+        exit(1)
     }
 
     getBinding().setVariable('split', split)
