@@ -34,4 +34,4 @@ cd "../app"
 upgrade_grails
 grails clean
 grails test partition-test \"--split=1\" \"--totalSplits=2\"
-grails test partition-test \"--split=12\" \"--totalSplits=2\"
+grails test partition-test \"--split=2\" \"--totalSplits=2\"
