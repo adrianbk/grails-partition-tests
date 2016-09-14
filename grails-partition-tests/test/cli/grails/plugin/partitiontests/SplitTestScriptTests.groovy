@@ -47,7 +47,7 @@ class SplitTestScriptTests extends AbstractCliTestCase{
 
     private void executeAndWait(String... args) {
         execute([scriptName] + (args as List))
-        assert 0 == waitForProcess()
+        assert 1 == waitForProcess()
         verifyHeader()
     }
 }
