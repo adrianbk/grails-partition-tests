@@ -26,28 +26,33 @@ class SplitTestScriptTests extends AbstractCliTestCase{
     }
 
     void testShouldRequireBothArgs(){
-        executeAndWait '--skip'
+        executeAndWait(false, '--skip')
         assert output.contains('split and totalSplits must be suppplied')
     }
 
     void testShouldRequireCurrentSplitLessThanTotalSplits(){
-        executeAndWait '--skip', "--split=2",  "--totalSplits=1"
+        executeAndWait(false, '--skip', "--split=2",  "--totalSplits=1")
         assert output.contains(' must not be greater than totalSplits')
     }
 
     void testShouldNotAllowNegativeSplits(){
-        executeAndWait '--skip', "--split=-1",  "--totalSplits=-3"
+        executeAndWait(false, '--skip', "--split=-1",  "--totalSplits=-3")
         assert output.contains('Split arguments must not be negative!')
     }
 
     void testValidSplits(){
-        executeAndWait '--skip', "--split=1",  "--totalSplits=3"
+        executeAndWait(true, '--skip', "--split=1",  "--totalSplits=3")
         assert output.contains("** Running Tests in partition mode. Split (1) of (3) split's **")
     }
 
-    private void executeAndWait(String... args) {
+    private void executeAndWait(boolean expectSuccess, String... args) {
         execute([scriptName] + (args as List))
-        assert 1 == waitForProcess()
+        def result = waitForProcess()
+        if(expectSuccess) {
+            assert result == 0 
+        } else {
+            assert result > 0 
+        }
         verifyHeader()
     }
 }
