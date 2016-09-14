@@ -27,7 +27,7 @@ upgrade_grails(){
 cd "grails-partition-tests"
 upgrade_grails
 grails clean
-grails test-app --unit
+grails test-app
 grails package-plugin
 
 cd "../app"
