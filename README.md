@@ -15,7 +15,7 @@ Add a dependency for the plugin in BuildConfig.groovy:
     }
 
 ### Usage ###
-The partition-test command takes all of the same arguments that test-app takes with the addition of the arguments: ‘split’ and ‘totalSplits’ (both are required)
+The `partition-test` command takes all of the same arguments that test-app takes with the addition of the arguments: ‘split’ and ‘totalSplits’ (both are required)
 
 
 Run all tests across all test phases with some optional test-app arguments 
@@ -32,6 +32,11 @@ Run the 1st half of all of the applications tests for all test phases and test t
 grails test partition-test "--split=1" "--totalSplits=2"
 ```
 
+Run the 1st third of all unit tests
+```
+grails test partition-test :unit "--split=1" "--totalSplits=3"
+```
+
 Run the 1st third of all spock tests in the unit test phase
 ```shell 
 grails test partition-test unit:spock "--split=1" "--totalSplits=3"
@@ -43,21 +48,23 @@ grails test partition-test functional:spock "--split=2" "--totalSplits=50"
 
 ### Deterministic splits ###
 The test files are distributed across partitions based on a composite sort in the following order
+
 1. Test file size
-2. Test file path
+1. Test file path
 
 i.e. the 1st file in the 1st partition will be the largest file, the 1st file in the second partition will be the 2nd largest file and so on..
 
-If two test files have the same size and name (same file names but in different packages) the files path is used as the secondary qualifier when distributing across partitions. 
+If two test files have the same size and name (same file names but in different packages) the file's path is used as the secondary
+qualifier when distributing across partitions.
 
 
 ### Limitations ###
-1. Relies on any custom test types in your application to extend from GrailsTestTypeSupport (as is the standard Grails way to add additional test types).
-	* The default Grails test type is: JUnit4GrailsTestType
-	* Spock uses :GrailsSpecTestType
+1. Relies on any custom test types in your application to extend from `GrailsTestTypeSupport` (as is the standard Grails way to add additional test types).
+    * The default Grails test type is: `JUnit4GrailsTestType ``
+    * Spock uses: `GrailsSpecTestType`
 2. All test types must use the `GrailsTestTypeSupport.eachSourceFile(Closure body) {..}` closure to locate it's test source files
-3. Grails environment must be specified as setting scriptEnv="test" in PartitionTest.groovy does not set the environment to test as expected
-    * `grails test partition-test .... `
+3. When a grails environment is required for a test phase, it must be set using `-Dgrails.env=test`. The reason is because setting `scriptEnv="test"` in [PartitionTest.groovy](http://github.com/adrianbk/grails-partition-tests/blob/b83cd608d2dca6a43fb5b3b8a09dd70567d94377/grails-partition-tests/scripts/PartitionTest.groovy#L1-L1) does not seem to set the environment to test as expected.
+
 
 
 ### Development
