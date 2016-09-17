@@ -11,7 +11,7 @@ Add a dependency for the plugin in BuildConfig.groovy:
 
     plugins {
        ...
-       test ":partition-tests:0.1"
+       test ":partition-tests:0.3"
     }
 
 ### Usage ###
